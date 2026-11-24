@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Misi Kecerunan Mudah</title>
+<style>
+*{box-sizing:border-box}body{font-family:Arial,sans-serif;background:#f2f7ff;margin:0;color:#20304a}
+.wrap{max-width:850px;margin:22px auto;padding:16px}.hero{background:linear-gradient(120deg,#2563eb,#7c3aed);color:white;padding:22px;border-radius:18px;text-align:center}
+.hero h1{margin:0 0 8px;font-size:27px}.hero p{margin:0}.panel{background:white;padding:18px;margin:14px 0;border-radius:15px;box-shadow:0 3px 12px #1e3a8a12}
+input{padding:10px;border:1px solid #cbd5e1;border-radius:8px;margin:5px;max-width:180px}button{border:0;border-radius:10px;padding:11px 17px;background:#2563eb;color:white;font-weight:bold;cursor:pointer;margin:5px}button:hover{filter:brightness(.93)}
+.q{border-top:1px solid #e5e7eb;padding:16px 0}.q:first-child{border:0}.tag{font-size:12px;color:#6b7280;font-weight:bold}.question{font-size:18px;font-weight:bold;margin:8px 0}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:8px}.opt{background:#eef2ff;color:#1e3a8a;text-align:left;border:2px solid transparent}.opt.selected{border-color:#2563eb;background:#dbeafe}.feedback{font-weight:bold;margin-top:8px}.small{font-size:14px;color:#475569}
+#result{font-size:20px;font-weight:bold;text-align:center;padding:15px;background:#ecfdf5;border-radius:12px}
+@media(max-width:550px){.options{grid-template-columns:1fr}.hero h1{font-size:22px}}
+</style></head><body><div class="wrap">
+<div class="hero"><h1>📈 MISI KECERUNAN MUDAH</h1><p>Matematik Tingkatan 3 • Garis Lurus</p><p>20 soalan objektif | Aras mudah</p></div>
+<div class="panel"><b>Nama:</b><input id="nama" placeholder="Nama murid"> <b>Kelas:</b><input id="kelas" placeholder="Kelas"><p class="small">Pilih satu jawapan bagi setiap soalan. Untuk garis lurus selari, ingat bahawa kedua-dua garis mempunyai kecerunan yang sama.</p></div>
+<div class="panel" id="quiz"></div><div class="panel"><button onclick="mark()">Hantar Jawapan</button><button onclick="location.reload()">Cuba Semula</button><div id="result"></div></div>
+</div>
+<script>
+const qs=[
+["Diberi persamaan garis lurus y = 2x + 3. Berapakah kecerunan?",["2","3","-2","-3"],0,"Dalam bentuk y = mx + c, kecerunan ialah nombor di hadapan x, iaitu 2."],
+["Diberi y = 5x - 1. Tentukan kecerunan.",["-1","1","5","-5"],2,"Nombor di hadapan x ialah 5."],
+["Diberi y = -3x + 4. Apakah kecerunannya?",["4","3","-4","-3"],3,"Kecerunan ialah pekali x, iaitu -3."],
+["Diberi y = x + 7. Tentukan kecerunan.",["7","1","0","-1"],1,"Pekali x yang tidak ditulis ialah 1."],
+["Diberi y = -x + 2. Berapakah kecerunan?",["-1","1","2","-2"],0,"Pekali x ialah -1."],
+["Dua garis lurus mempunyai persamaan y = 2x + 1 dan y = 2x - 5. Apakah kecerunan kedua-dua garis?",["1 dan -5","2 dan 2","2 dan -5","1 dan 2"],1,"Kedua-dua persamaan mempunyai pekali x yang sama, iaitu 2."],
+["Garis A: y = 4x + 3. Garis B: y = 4x - 2. Apakah hubungan kedua-dua garis?",["Berserenjang","Bersilang pada paksi-y","Selari","Tidak selari"],2,"Kecerunan kedua-duanya sama, iaitu 4. Maka garis adalah selari."],
+["Garis P mempunyai kecerunan 3. Garis Q selari dengan P. Tentukan kecerunan Q.",["-3","0","1/3","3"],3,"Garis-garis selari mempunyai kecerunan yang sama."],
+["Garis A mempunyai kecerunan -2. Garis B selari dengan A. Apakah kecerunan B?",["2","-2","1/2","-1/2"],1,"Kecerunan garis B juga -2."],
+["Diberi persamaan y = 6x + 8. Apakah kecerunan garis yang selari dengannya?",["8","-6","6","-8"],2,"Garis selari mempunyai kecerunan sama, iaitu 6."],
+["Diberi y = 7x - 4. Berapakah nilai m dalam bentuk y = mx + c?",["-4","4","-7","7"],3,"Nilai m ialah pekali x, iaitu 7."],
+["Diberi y = -5x - 6. Berapakah nilai m?",["-5","-6","5","6"],0,"Nilai m ialah -5."],
+["Garis lurus y = 3x + 2 adalah selari dengan garis y = mx - 9. Cari nilai m.",["-3","2","3","9"],2,"Oleh sebab garis selari, kecerunan sama. Maka m = 3."],
+["Garis lurus y = -4x + 1 adalah selari dengan y = mx + 6. Tentukan m.",["4","-4","1","6"],1,"Kecerunan garis pertama ialah -4. Jadi m = -4."],
+["Garis A: y = 1/2 x + 3. Garis B selari dengan A. Berapakah kecerunan B?",["3","2","-1/2","1/2"],3,"Kecerunan garis A ialah 1/2. Garis selari mempunyai kecerunan yang sama."],
+["Garis P: y = -1/3 x + 5. Garis Q selari dengan P. Tentukan kecerunan Q.",["-1/3","1/3","-3","3"],0,"Kecerunan Q sama dengan P, iaitu -1/3."],
+["Dua garis mempunyai persamaan y = 8x + 2 dan y = kx - 1. Jika kedua-duanya selari, cari k.",["2","-1","8","-8"],2,"Kecerunan garis pertama 8. Oleh itu k = 8."],
+["Dua garis lurus selari. Garis pertama y = -7x + 4. Apakah kecerunan garis kedua?",["7","-7","4","-4"],1,"Kecerunan garis kedua mesti sama, iaitu -7."],
+["Garis A: y = 2x + 6. Garis B: y = 5x - 1. Adakah kedua-duanya selari?",["Ya, kerana kedua-duanya positif","Ya, kerana ada x","Tidak, kerana kecerunan berbeza","Tidak, kerana pintasan-y berbeza"],2,"Kecerunan 2 dan 5 berbeza. Jadi kedua-dua garis tidak selari."],
+["Garis P: y = -2x + 1. Garis Q: y = -2x - 8. Apakah kesimpulan yang betul?",["Selari kerana kecerunan sama","Tidak selari kerana pintasan-y berbeza","Berserenjang","Kecerunan kedua-duanya sifar"],0,"Kedua-dua garis mempunyai kecerunan -2, maka garis adalah selari."]
+];
+const quiz=document.getElementById('quiz');
+qs.forEach((q,i)=>{let d=document.createElement('div');d.className='q';d.innerHTML=`<div class="tag">SOALAN ${i+1} • ${i<10?'ASAS':'APLIKASI MUDAH'}</div><div class="question">${q[0]}</div><div class="options">${q[1].map((o,j)=>`<button class="opt" data-q="${i}" data-a="${j}" onclick="choose(${i},${j},this)">${String.fromCharCode(65+j)}. ${o}</button>`).join('')}</div><div id="f${i}" class="feedback"></div>`;quiz.appendChild(d)});
+function choose(i,j,el){document.querySelectorAll(`[data-q="${i}"]`).forEach(b=>b.classList.remove('selected'));el.classList.add('selected');document.getElementById('f'+i).textContent='';}
+function mark(){let score=0;qs.forEach((q,i)=>{let s=document.querySelector(`[data-q="${i}"].selected`),f=document.getElementById('f'+i);if(s&&Number(s.dataset.a)===q[2]){score++;f.style.color='#15803d';f.textContent='✓ Betul! '+q[3]}else{f.style.color='#b91c1c';f.textContent='✗ Jawapan: '+String.fromCharCode(65+q[2])+'. '+q[1][q[2]]+'. '+q[3]}});document.getElementById('result').textContent=`${document.getElementById('nama').value||'Murid'} memperoleh ${score}/20 markah.`;window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'});}
+</script></body></html>
