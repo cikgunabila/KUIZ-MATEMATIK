@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SET-O-MANIA! | Misi Dunia Set</title>
+<style>
+:root{--ink:#26324b;--pink:#ff6fae;--purple:#8067e8;--blue:#58b8ef;--yellow:#ffd45c;--green:#39bd91;--bg:#fff8ee}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);background:linear-gradient(135deg,#fff4d9,#f5eaff 48%,#e6f8ff);min-height:100vh}
+main{max-width:850px;margin:auto;padding:22px 15px 50px}.hero{position:relative;overflow:hidden;text-align:center;padding:30px 18px;border-radius:28px;background:linear-gradient(120deg,#ff8ab8,#a28af4 55%,#69c9ef);color:white;box-shadow:0 12px 30px #6e60a633}
+.hero:before,.hero:after{content:"✦";position:absolute;font-size:60px;color:#ffffff55}.hero:before{left:20px;top:8px}.hero:after{right:25px;bottom:0}
+h1{font-size:clamp(2.1rem,7vw,3.7rem);line-height:1;margin:8px 0;text-shadow:0 3px 0 #6a4db455}.sub{font-size:1.05rem;font-weight:800;letter-spacing:1px}.tag{display:inline-block;background:#ffffff33;border:1px solid #ffffff88;border-radius:999px;padding:7px 14px;margin-top:12px;font-weight:700}
+.panel{background:#ffffffed;border:2px solid #fff;border-radius:22px;padding:20px;margin-top:18px;box-shadow:0 8px 25px #514b7a12}
+.row{display:flex;gap:12px;flex-wrap:wrap}.row label{flex:1;min-width:180px;font-weight:700;font-size:.92rem}input{display:block;width:100%;padding:12px 13px;border:2px solid #e7e1f6;border-radius:12px;margin-top:6px;font:inherit}
+.progress-wrap{height:12px;background:#eee9fa;border-radius:99px;overflow:hidden;margin:12px 0}.progress{height:100%;width:0;background:linear-gradient(90deg,var(--pink),var(--purple),var(--blue));transition:width .25s}
+.meta{display:flex;justify-content:space-between;gap:10px;font-weight:800;color:#6a5d99}.question{font-size:1.2rem;font-weight:800;line-height:1.45;margin:15px 0}
+.level{font-size:.78rem;display:inline-block;border-radius:999px;padding:5px 10px;background:#fff0bd;color:#745000;font-weight:800}
+.options{display:grid;gap:10px}.opt{border:2px solid #e9e4f5;background:#fff;border-radius:15px;padding:13px 15px;text-align:left;font:inherit;font-weight:700;color:var(--ink);cursor:pointer;transition:.15s}.opt:hover{border-color:var(--purple);transform:translateY(-1px)}.opt.selected{border-color:var(--purple);background:#f2efff}.opt.correct{border-color:var(--green);background:#e9fff6}.opt.wrong{border-color:#ff7894;background:#fff0f3}.feedback{margin-top:13px;padding:12px 14px;border-radius:13px;font-weight:700;display:none}.feedback.show{display:block}.feedback.good{background:#e8fff5;color:#147c5a}.feedback.bad{background:#fff0f2;color:#a43c58}
+.actions{display:flex;justify-content:space-between;gap:10px;margin-top:18px}button.primary{border:0;border-radius:14px;padding:12px 20px;font:inherit;font-weight:900;color:white;background:linear-gradient(100deg,#8b6be8,#5ab9ed);cursor:pointer}button.primary:disabled{opacity:.45;cursor:not-allowed}.small{font-size:.9rem;color:#716d82}
+#result{text-align:center} .score{font-size:3.8rem;font-weight:1000;color:#8067e8;line-height:1.1}.stars{font-size:2rem;letter-spacing:5px}.review{text-align:left;margin-top:20px}.review details{background:#faf8ff;border:1px solid #e9e2fa;border-radius:12px;padding:11px 13px;margin:9px 0}.review summary{font-weight:800;cursor:pointer}.footer{text-align:center;color:#776f8e;font-size:.85rem;padding:18px}
+@media(max-width:520px){.panel{padding:16px}.actions button{flex:1}.meta{font-size:.88rem}}
+</style>
+</head>
+<body>
+<main>
+<header class="hero">
+  <div style="font-size:2rem">🌈 🧠 ✨</div>
+  <h1>SET-O-MANIA!</h1>
+  <div class="sub">MISI DUNIA SET</div>
+  <div style="font-weight:700;margin-top:7px">THINK • MATCH • WIN!</div>
+  <div class="tag">🏆 CABARAN MATEMATIK TINGKATAN 1</div>
+</header>
+<section class="panel" id="intro">
+  <h2 style="margin:0 0 8px">Hai, Juara Matematik! 👋</h2>
+  <p>Jom teroka dunia set! Jawab 20 soalan tentang <b>Pengenalan Set</b> dan kumpulkan markah tertinggi.</p>
+  <div class="row">
+    <label>Nama murid<input id="student" placeholder="Masukkan nama anda" autocomplete="name"></label>
+    <label>Kelas<input id="className" placeholder="Contoh: 1 Bestari"></label>
+  </div>
+  <p class="small">✨ Setiap soalan bernilai 1 markah. Pilih satu jawapan bagi setiap soalan. Maklum balas akan dipaparkan selepas anda menjawab.</p>
+  <button class="primary" style="width:100%;margin-top:8px" onclick="startQuiz()">MULA CABARAN! 🚀</button>
+</section>
+<section class="panel" id="quiz" hidden>
+  <div class="meta"><span id="counter">Soalan 1 / 20</span><span id="scoreNow">⭐ 0 markah</span></div>
+  <div class="progress-wrap"><div class="progress" id="progress"></div></div>
+  <span class="level" id="level">ARAS MUDAH</span>
+  <div class="question" id="question"></div>
+  <div class="options" id="options"></div>
+  <div class="feedback" id="feedback" aria-live="polite"></div>
+  <div class="actions"><button class="primary" id="next" disabled onclick="nextQuestion()">Seterusnya ➜</button></div>
+</section>
+<section class="panel" id="result" hidden></section>
+<div class="footer">💖 SET-O-MANIA! • Belajar Matematik dengan ceria</div>
+</main>
+<script>
+const questions = [
+{q:"Simbol yang digunakan untuk menunjukkan bahawa sesuatu objek ialah unsur bagi suatu set ialah ...",o:["∈","∉","⊂","∪"],a:0,e:"Simbol ∈ bermaksud ialah unsur bagi sesuatu set.",l:"Mudah"},
+{q:"Diberi set A = {2, 4, 6, 8}. Antara berikut, yang manakah unsur bagi set A?",o:["3","6","7","9"],a:1,e:"6 disenaraikan sebagai unsur dalam set A.",l:"Mudah"},
+{q:"Set B ialah set nombor ganjil antara 1 hingga 9. Apakah unsur-unsur set B?",o:["{1, 3, 5, 7, 9}","{2, 4, 6, 8}","{1, 2, 3, 4, 5}","{3, 5, 7}"],a:0,e:"Nombor ganjil dalam julat tersebut ialah 1, 3, 5, 7 dan 9.",l:"Mudah"},
+{q:"Diberi P = {a, e, i, o, u}. Berapakah bilangan unsur dalam set P?",o:["4","5","6","10"],a:1,e:"Terdapat lima unsur dalam set P.",l:"Mudah"},
+{q:"Antara berikut, yang manakah contoh set kosong?",o:["Set nombor genap kurang daripada 10","Set bulan yang mempunyai 32 hari","Set huruf dalam perkataan BOLA","Set nombor perdana kurang daripada 10"],a:1,e:"Tiada bulan yang mempunyai 32 hari, maka set ini kosong.",l:"Mudah"},
+{q:"Diberi A = {1, 2, 3} dan B = {3, 2, 1}. Apakah hubungan antara kedua-dua set?",o:["Set A dan B sama","A subset bagi B sahaja","Set A kosong","A dan B tiada unsur yang sama"],a:0,e:"Kedua-dua set mempunyai unsur yang sama walaupun susunannya berbeza.",l:"Mudah"},
+{q:"Diberi A = {1, 2} dan B = {1, 2, 3, 4}. Pernyataan yang betul ialah ...",o:["A ⊂ B","B ⊂ A","A = B","A ialah set kosong"],a:0,e:"Semua unsur A terdapat dalam B, maka A ialah subset B.",l:"Sederhana"},
+{q:"Diberi set semesta ξ = {1, 2, 3, 4, 5, 6}. Apakah maksud set semesta?",o:["Set yang tidak mempunyai unsur","Set yang mengandungi semua unsur yang dibincangkan","Set yang mempunyai satu unsur sahaja","Set yang mempunyai unsur berulang"],a:1,e:"Set semesta merangkumi semua unsur dalam perbincangan.",l:"Mudah"},
+{q:"Diberi ξ = {1, 2, 3, 4, 5} dan A = {2, 4}. Apakah pelengkap bagi set A?",o:["{2, 4}","{1, 3, 5}","{1, 2, 3}","{4, 5}"],a:1,e:"Unsur dalam set semesta yang tidak terdapat dalam A ialah 1, 3 dan 5.",l:"Sederhana"},
+{q:"Diberi A = {1, 2, 3} dan B = {3, 4, 5}. Apakah A ∪ B?",o:["{3}","{1, 2, 3, 4, 5}","{1, 2}","{4, 5}"],a:1,e:"Kesatuan menggabungkan semua unsur kedua-dua set tanpa pengulangan.",l:"Sederhana"},
+{q:"Diberi A = {2, 4, 6} dan B = {4, 6, 8}. Apakah A ∩ B?",o:["{2, 8}","{2, 4, 6, 8}","{4, 6}","{2, 6, 8}"],a:2,e:"4 dan 6 ialah unsur yang terdapat dalam kedua-dua set.",l:"Sederhana"},
+{q:"Jika n(A) = 7, apakah maksud n(A)?",o:["Bilangan unsur dalam set A","Unsur pertama set A","Set kosong A","Pelengkap set A"],a:0,e:"Notasi n(A) mewakili bilangan unsur dalam set A.",l:"Mudah"},
+{q:"Diberi A = {a, b, c} dan B = {c, d}. Berapakah bilangan unsur dalam A ∪ B?",o:["3","4","5","6"],a:1,e:"Kesatuan mengandungi a, b, c dan d, iaitu empat unsur.",l:"Sederhana"},
+{q:"Set C = {x : x ialah nombor asli kurang daripada 5}. Apakah unsur set C?",o:["{0, 1, 2, 3, 4}","{1, 2, 3, 4}","{1, 2, 3, 4, 5}","{2, 3, 4, 5}"],a:1,e:"Nombor asli yang kurang daripada 5 ialah 1, 2, 3 dan 4.",l:"Sederhana"},
+{q:"Set kosong ialah subset bagi setiap set.",o:["Betul","Salah"],a:0,e:"Set kosong ialah subset bagi setiap set kerana tiada unsur yang melanggar syarat subset.",l:"Sederhana",tf:true},
+{q:"Jika A = {1, 2} dan B = {1, 2, 3}, maka A = B.",o:["Betul","Salah"],a:1,e:"Pernyataan ini salah kerana B mempunyai unsur tambahan, iaitu 3.",l:"Mudah",tf:true},
+{q:"Pilih semua set yang mempunyai tepat tiga unsur.",o:["{1, 2, 3}","{a, b}","{merah, biru, hijau}","{2, 4, 6, 8}"],a:[0,2],e:"{1, 2, 3} dan {merah, biru, hijau} masing-masing mempunyai tiga unsur.",l:"Sederhana",multi:true},
+{q:"Diberi ξ = {a, b, c, d, e} dan P = {a, c, e}. Apakah pelengkap P?",o:["{a, c, e}","{b, d}","{a, b, c}","{d, e}"],a:1,e:"b dan d berada dalam set semesta tetapi tidak berada dalam P.",l:"Sederhana"},
+{q:"Diberi A = {1, 2, 3, 4} dan B = {2, 4}. Apakah hubungan B dengan A?",o:["B ⊂ A","A ⊂ B","A = B","B ialah set kosong"],a:0,e:"Kedua-dua unsur B, iaitu 2 dan 4, terdapat dalam A.",l:"Sederhana"},
+{q:"Diberi X = {2, 4, 6, 8} dan Y = {1, 3, 5, 7}. Apakah X ∩ Y?",o:["{1, 2, 3, 4, 5, 6, 7, 8}","{2, 4, 6, 8}","{1, 3, 5, 7}","∅"],a:3,e:"Tiada unsur yang sama dalam X dan Y, maka persilangannya ialah set kosong.",l:"Sederhana"}
+];
+let index=0,answers=[],locked=false;
+const $=id=>document.getElementById(id);
+function startQuiz(){
+ if(!$("student").value.trim()){alert("Masukkan nama dahulu ya! 😊");$("student").focus();return;}
+ $("intro").hidden=true;$("quiz").hidden=false;render();
+}
+function render(){
+ const q=questions[index];locked=false;
+ $("counter").textContent=`Soalan ${index+1} / ${questions.length}`;
+ $("scoreNow").textContent=`⭐ ${answers.filter((v,i)=>v!==undefined&&isCorrect(questions[i],v)).length} markah`;
+ $("progress").style.width=`${index/questions.length*100}%`;
+ $("level").textContent=q.l==="Mudah"?"🌟 ARAS MUDAH":"🚀 ARAS SEDERHANA";
+ $("question").textContent=q.q;
+ $("options").innerHTML="";
+ q.o.forEach((opt,i)=>{
+  const b=document.createElement("button");b.className="opt";b.textContent=(q.multi?"☐ ":"")+String.fromCharCode(65+i)+". "+opt;
+  b.onclick=()=>choose(i,b);$("options").appendChild(b);
+ });
+ $("feedback").className="feedback";$("feedback").textContent="";
+ $("next").disabled=true;$("next").textContent=index===questions.length-1?"Lihat Keputusan 🏆":"Seterusnya ➜";
+}
+function choose(i,btn){
+ if(locked)return;const q=questions[index];
+ if(q.multi){
+  let chosen=answers[index]||[];chosen=chosen.includes(i)?chosen.filter(x=>x!==i):[...chosen,i];answers[index]=chosen;
+  [...$("options").children].forEach((b,j)=>{b.classList.toggle("selected",chosen.includes(j));b.textContent=(chosen.includes(j)?"☑ ":"☐ ")+String.fromCharCode(65+j)+". "+q.o[j]});
+  $("next").disabled=chosen.length===0;
+  $("feedback").className="feedback show";$("feedback").textContent="Pilih semua jawapan yang betul, kemudian tekan Seterusnya.";
+  return;
+ }
+ answers[index]=i;locked=true;showFeedback();
+}
+function isCorrect(q,v){return q.multi?Array.isArray(v)&&v.length===q.a.length&&q.a.every(x=>v.includes(x)):v===q.a}
+function showFeedback(){
+ const q=questions[index],ok=isCorrect(q,answers[index]);
+ [...$("options").children].forEach((b,j)=>{
+  const correct=q.multi?q.a.includes(j):j===q.a;
+  if(correct)b.classList.add("correct");
+  else if((q.multi?answers[index].includes(j):j===answers[index]))b.classList.add("wrong");
+  b.disabled=true;
+ });
+ $("feedback").className="feedback show "+(ok?"good":"bad");
+ $("feedback").textContent=(ok?"🎉 Hebat! Jawapan tepat! ":"💡 Teruskan usaha! ")+q.e;
+ $("next").disabled=false;
+}
+function nextQuestion(){
+ if(answers[index]===undefined)return;
+ if(index<questions.length-1){index++;render();return;}
+ finish();
+}
+function finish(){
+ $("quiz").hidden=true;$("result").hidden=false;
+ const score=answers.filter((v,i)=>isCorrect(questions[i],v)).length;
+ let msg=score>=18?"Wah, anda memang Juara Set! 🏆":score>=14?"Hebat! Anda semakin mahir! 🌟":score>=10?"Bagus! Teruskan berlatih! 💪":"Jangan putus asa. Cuba lagi dan pasti boleh! 🌈";
+ $("result").innerHTML=`<div style="font-size:2.5rem">🎊🏅🎊</div><h2>TAMAT CABARAN!</h2><p style="font-weight:800">${escapeHtml($("student").value)} ${$("className").value.trim()?"• "+escapeHtml($("className").value):""}</p><div class="score">${score}<span style="font-size:1.5rem"> / 20</span></div><div class="stars">${"⭐".repeat(Math.max(1,Math.round(score/4)))}</div><h3>${msg}</h3><p>Terima kasih kerana menyertai SET-O-MANIA!</p><div class="review"><h3>📚 Semakan Jawapan</h3>${questions.map((q,i)=>{let ok=isCorrect(q,answers[i]);let chosen=Array.isArray(answers[i])?answers[i].map(x=>q.o[x]).join(", "):q.o[answers[i]];let correct=Array.isArray(q.a)?q.a.map(x=>q.o[x]).join(", "):q.o[q.a];return `<details><summary>${ok?"✅":"❌"} Soalan ${i+1}: ${ok?"Betul":"Semak semula"}</summary><p>${escapeHtml(q.q)}</p><p><b>Jawapan anda:</b> ${escapeHtml(chosen||"Tiada")}</p><p><b>Jawapan tepat:</b> ${escapeHtml(correct)}</p><p>${escapeHtml(q.e)}</p></details>`}).join("")}</div><button class="primary" onclick="location.reload()">CUBA LAGI 🔄</button>`;
+ $("progress").style.width="100%";
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+</script>
+</body>
+</html>
